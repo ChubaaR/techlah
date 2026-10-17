@@ -1,0 +1,5 @@
+import {Link} from 'react-router-dom';import {Article} from '../../types/article';import {catName} from '../../data/categories';import {formatDate} from '../../utils/formatDate';
+export const Meta=({a}:{a:Article})=><p className="text-[11px] text-neutral-500"><span className="font-medium text-ink">{a.author}</span> • {formatDate(a.date)}</p>;
+export const Tag=({a}:{a:Article})=><p className="text-[11px] text-neutral-500">{a.sponsored&&<b className="mr-1 rounded bg-neutral-200 px-1 text-ink">Sponsored</b>}<span className="text-coral">{catName(a.category)}</span> • {a.minutes} min read</p>;
+export const Img=({a,cls}:{a:Article;cls:string})=><img src={a.image} alt={a.alt} loading="lazy" className={'w-full rounded-lg '+cls}/>;
+export const Card=({a,ratio='aspect-[3/2]'}:{a:Article;ratio?:string})=><Link to={'/article/'+a.slug} className="block"><Img a={a} cls={ratio}/><div className="mt-2 space-y-1"><Meta a={a}/><h3 className="text-sm font-semibold leading-snug">{a.title}</h3><p className="line-clamp-2 text-[11px] text-neutral-500">{a.summary}</p><Tag a={a}/></div></Link>;

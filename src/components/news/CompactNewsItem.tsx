@@ -1,0 +1,2 @@
+import {Link} from 'react-router-dom';import {Meta,Tag} from './NewsCard';import {Article} from '../../types/article';
+export const Compact=({a}:{a:Article})=><Link to={'/article/'+a.slug} className="flex gap-3"><img src={a.image} alt={a.alt} className="h-16 w-20 shrink-0 rounded"/><div className="space-y-0.5"><Meta a={a}/><h3 className="text-xs font-semibold leading-snug">{a.title}</h3><Tag a={a}/></div></Link>;

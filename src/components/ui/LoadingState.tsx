@@ -1,0 +1,1 @@
+export const Msg=({loading,error}:{loading?:boolean;error?:string|null})=>error?<p role="alert" className="rounded bg-red-50 p-3 text-sm text-red-700">Couldn’t load articles: {error}</p>:loading?<p role="status" className="py-10 text-center text-sm text-neutral-500">Loading…</p>:null;

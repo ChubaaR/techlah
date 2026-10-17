@@ -1,0 +1,3 @@
+export interface Article{id:string;slug:string;title:string;summary:string;content:string;category:string;image:string;alt:string;author:string;publisher:string;date:string;publishedAt:string|null;status:'draft'|'published';featured:boolean;sponsored:boolean;minutes:number;url:string;tags:string[]}
+/** Row shape of public.articles. */
+export interface ArticleRow{id:string;title:string;slug:string;summary:string;content:string;category:string;image_url:string|null;image_alt:string|null;author_name:string;source_name:string|null;published_at:string|null;status:'draft'|'published';is_featured:boolean;is_sponsored:boolean;external_url:string|null;reading_time_minutes:number|null;tags:string[];created_at:string;updated_at:string}

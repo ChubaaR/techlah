@@ -1,0 +1,4 @@
+import {resources} from '../data/learning';import {ext} from '../utils/helpers';
+export function LearningPage(){return<><h1 className="text-2xl font-semibold">Learning</h1><p className="mb-4 text-sm text-neutral-500">Curated external resources. “Free” labels reflect our last check; confirm on the provider's site.</p>
+<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{resources.map(r=><div key={r.url} className="flex flex-col rounded-lg bg-neutral-100 p-4 text-xs"><p className="text-coral">{r.topic}{r.free&&<b className="ml-2 rounded bg-white px-1 text-ink">Free</b>}</p>
+<h2 className="mt-1 text-sm font-semibold">{r.title}</h2><p className="text-neutral-500">{r.provider}</p><p className="my-2 flex-1">{r.desc}</p><a href={r.url} {...ext} className="font-semibold text-coral">Visit Resource</a></div>)}</div></>}
