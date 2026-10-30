@@ -16,8 +16,8 @@ export function ContactUsPage(){
           <p className="mt-2 text-sm text-neutral-600">
             For sponsored content, campaign collaborations, brand visibility, and media partnerships.
           </p>
-          <a href="mailto:codewithchuba@gmail.com" className="mt-4 inline-block text-sm font-medium text-coral">
-            codewithchuba@gmail.com
+          <a href="mailto:newstechlah@gmail.com" className="mt-4 inline-block text-sm font-medium text-coral">
+            newstechlah@gmail.com
           </a>
         </div>
 
@@ -26,8 +26,8 @@ export function ContactUsPage(){
           <p className="mt-2 text-sm text-neutral-600">
             For press, product, community, and broader business questions.
           </p>
-          <a href="mailto:codewithchuba@gmail.com" className="mt-4 inline-block text-sm font-medium text-coral">
-            codewithchuba@gmail.com
+          <a href="mailto:newstechlah@gmail.com" className="mt-4 inline-block text-sm font-medium text-coral">
+            newstechlah@gmail.com
           </a>
         </div>
       </div>
