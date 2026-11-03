@@ -2,7 +2,7 @@ import {useState} from 'react';import {Link,useNavigate} from 'react-router-dom'
 export default function AdminDashboard({role,userId}:{role:auth.AccessRole;userId:string}){
 const isEditor=role==='editor';const[n,setN]=useState(0);const{data:all,loading,error}=useAsync(()=>isEditor?svc.editorList(userId):svc.adminList(),[n,isEditor,userId]);const go=useNavigate();
 const[ed,setEd]=useState<Article|null>(null);const[q,setQ]=useState('');const[errs,setErrs]=useState<string[]>([]);const[note,setNote]=useState<{ok:boolean;t:string}|null>(null);
-const[busy,setBusy]=useState(false);const[bad,setBad]=useState(false);const[pv,setPv]=useState(false);
+const[busy,setBusy]=useState(false);const[uploading,setUploading]=useState(false);const[bad,setBad]=useState(false);const[pv,setPv]=useState(false);
 const set=<K extends keyof Article>(k:K,v:Article[K])=>setEd(e=>e&&{...e,[k]:v});
 const run=async(fn:()=>Promise<void>,ok:string)=>{setBusy(true);try{await fn();setNote({ok:true,t:ok});setN(x=>x+1);return true}catch(e){setNote({ok:false,t:msg(e)});return false}finally{setBusy(false)}};
 const save=async(status:Article['status'])=>{if(!ed)return;const m=[];
@@ -15,6 +15,7 @@ if(ed)return<form className="mx-auto max-w-2xl space-y-3 text-sm" onSubmit={e=>{
 {note&&!note.ok&&<p role="alert" className="rounded bg-red-50 p-2 text-red-700">{note.t}</p>}
 {errs.length>0&&<ul role="alert" className="rounded bg-red-50 p-2 text-red-700">{errs.map(x=><li key={x}>{x}</li>)}</ul>}
 {([['Title','title'],['Slug (auto from title, editable)','slug'],['Summary','summary'],['Image URL','image'],['Image alt text','alt'],['Author','author'],['Source / publication','publisher'],['External URL (optional)','url']] as const).map(([l,k])=><label key={k} className="block">{l}<input className={cls} value={k==='slug'&&!ed.slug?slugify(ed.title):ed[k]} onChange={e=>{set(k,e.target.value);if(k==='image')setBad(false)}}/></label>)}
+<label className="block">Or upload an image<input className={cls} type="file" accept="image/jpeg,image/png,image/webp,image/gif" disabled={uploading} onChange={async e=>{const file=e.target.files?.[0];if(!file)return;setUploading(true);setNote(null);try{const image=await svc.uploadArticleImage(file,userId);set('image',image);setBad(false);setNote({ok:true,t:'Image uploaded.'})}catch(err){setNote({ok:false,t:msg(err)})}finally{setUploading(false);e.target.value=''}}}/><span className="text-xs text-neutral-500">JPG, PNG, WebP, or GIF; up to 10 MB. {uploading?'Uploading…':''}</span></label>
 {ed.image&&(bad||!isHttpUrl(ed.image)?<p className="text-red-700">Image could not be loaded. Check that the URL is a direct image link.</p>:<img src={ed.image} alt="Preview" onError={()=>setBad(true)} className="h-32 rounded"/>)}
 <label className="block">Content (blank line = new paragraph)<textarea rows={8} className={cls} value={ed.content} onChange={e=>set('content',e.target.value)}/></label><p className="text-neutral-500">Reading time: {readTime(ed.content)} min</p>
 <label className="block">Category<select className={cls} value={ed.category} onChange={e=>set('category',e.target.value)}>{categories.filter(c=>!isEditor||c.slug!=='careers').map(c=><option key={c.slug} value={c.slug}>{c.name}</option>)}</select></label>

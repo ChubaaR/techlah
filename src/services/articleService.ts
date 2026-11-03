@@ -24,3 +24,15 @@ export const createArticle=async(a:Article,userId:string)=>{await rows(db().from
 export const updateArticle=async(a:Article)=>{await rows(db().from('articles').update(toRow(a)).eq('id',a.id))};
 export const setStatus=async(a:Article,status:Article['status'])=>updateArticle({...a,status});
 export const deleteArticle=async(id:string)=>{await rows(db().from('articles').delete().eq('id',id))};
+
+export const uploadArticleImage=async(file:File,userId:string)=>{
+  const extensions:Record<string,string>={'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'};
+  const extension=extensions[file.type];
+  if(!extension)throw new Error('Choose a JPG, PNG, WebP, or GIF image.');
+  if(file.size>10*1024*1024)throw new Error('Image must be 10 MB or smaller.');
+  const path=`${userId}/${crypto.randomUUID()}.${extension}`;
+  const storage=db().storage.from('article-images');
+  const{error}=await storage.upload(path,file,{contentType:file.type,upsert:false});
+  if(error)throw new Error(error.message);
+  return storage.getPublicUrl(path).data.publicUrl;
+};
